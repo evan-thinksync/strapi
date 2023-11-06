@@ -88,8 +88,9 @@ export const ROUTES_CE: Route[] = [
   },
   {
     async Component() {
-      // @ts-expect-error – No types, yet.
-      const component = await import('./pages/ApiTokens/ProtectedListView');
+      const component = await import('./pages/ApiTokens/ProtectedListView').then((module) => ({
+        default: module.ProtectedApiTokenListView,
+      }));
 
       return component;
     },
@@ -98,8 +99,9 @@ export const ROUTES_CE: Route[] = [
   },
   {
     async Component() {
-      // @ts-expect-error – No types, yet.
-      const component = await import('./pages/ApiTokens/ProtectedCreateView');
+      const component = await import('./pages/ApiTokens/ProtectedCreateView').then((module) => ({
+        default: module.ProtectedApiTokenCreateView,
+      }));
 
       return component;
     },
@@ -108,8 +110,9 @@ export const ROUTES_CE: Route[] = [
   },
   {
     async Component() {
-      // @ts-expect-error – No types, yet.
-      const component = await import('./pages/ApiTokens/ProtectedEditView');
+      const component = await import('./pages/ApiTokens/ProtectedEditView').then((module) => ({
+        default: module.ProtectedApiTokenCreateView,
+      }));
 
       return component;
     },
