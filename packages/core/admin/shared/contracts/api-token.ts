@@ -1,9 +1,8 @@
-import { errors } from '@strapi/utils';
+import { Entity, errors } from '@strapi/utils';
 
 import { ValidationError as YupValidationError } from 'yup';
-import { Entity } from '@strapi/types';
 
-type ApiToken = {
+export type ApiToken = {
   accessKey: string;
   createdAt: string;
   description: string;
@@ -12,7 +11,7 @@ type ApiToken = {
   lastUsedAt: string | null;
   lifespan: string;
   name: string;
-  permissions: any[];
+  permissions: string[];
   type: 'custom' | 'full-access' | 'read-only';
   updatedAt: string;
 };

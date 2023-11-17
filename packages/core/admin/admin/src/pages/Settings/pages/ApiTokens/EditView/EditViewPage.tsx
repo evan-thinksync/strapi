@@ -21,8 +21,8 @@ import { useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
+  ApiTokenPermissionsContextValue,
   ApiTokenPermissionsProvider,
-  PseudoEvent,
 } from '../../../../../contexts/apiTokenPermissions';
 import { selectAdminPermissions } from '../../../../../selectors';
 import { formatAPIErrors } from '../../../../../utils/formatAPIErrors';
@@ -268,7 +268,9 @@ export const EditView = () => {
 
   const [hasChangedPermissions, setHasChangedPermissions] = React.useState(false);
 
-  const handleChangeCheckbox = ({ target: { value } }: PseudoEvent) => {
+  const handleChangeCheckbox = ({
+    target: { value },
+  }: Parameters<ApiTokenPermissionsContextValue['value']['onChange']>[0]) => {
     setHasChangedPermissions(true);
     dispatch({
       type: 'ON_CHANGE',
@@ -278,9 +280,7 @@ export const EditView = () => {
 
   const handleChangeSelectAllCheckbox = ({
     target: { value },
-  }: {
-    target: { value: { action: string; actionId: string }[] };
-  }) => {
+  }: Parameters<ApiTokenPermissionsContextValue['value']['onChangeSelectAll']>[0]) => {
     setHasChangedPermissions(true);
     dispatch({
       type: 'SELECT_ALL_IN_PERMISSION',
@@ -288,7 +288,9 @@ export const EditView = () => {
     });
   };
 
-  const setSelectedAction = ({ target: { value } }: PseudoEvent) => {
+  const setSelectedAction = ({
+    target: { value },
+  }: Parameters<ApiTokenPermissionsContextValue['value']['setSelectedAction']>[0]) => {
     dispatch({
       type: 'SET_SELECTED_ACTION',
       value,

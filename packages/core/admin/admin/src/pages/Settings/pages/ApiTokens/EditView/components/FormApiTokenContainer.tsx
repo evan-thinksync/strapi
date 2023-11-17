@@ -15,32 +15,15 @@ import TokenTypeSelect from '../../../../components/Tokens/TokenTypeSelect';
 
 type TokenType = 'full-access' | 'read-only' | 'custom';
 
+import type { ApiToken } from '../../../../../../../../shared/contracts/api-token';
+
 interface FormApiTokenContainerProps {
-  errors?: FormikErrors<{
-    name?: string;
-    description?: string;
-    lifespan?: string;
-    type?: string;
-  }>;
+  errors?: FormikErrors<Pick<ApiToken, 'name' | 'description' | 'lifespan' | 'type'>>;
   onChange: ({ target: { name, value } }: { target: { name: string; value: TokenType } }) => void;
   canEditInputs: boolean;
-  values: {
-    name: string;
-    description: string;
-    lifespan: number | string;
-    type: string;
-  };
+  values: Pick<ApiToken, 'name' | 'description' | 'lifespan' | 'type'>;
   isCreating: boolean;
-  apiToken?: {
-    id?: number | string;
-    type?: string;
-    lifespan?: string;
-    name?: string;
-    accessKey?: string;
-    permissions?: any[];
-    description?: string;
-    createdAt?: string;
-  };
+  apiToken?: Partial<ApiToken>;
   onDispatch: React.Dispatch<any>;
   setHasChangedPermissions: (hasChanged: boolean) => void;
 }
