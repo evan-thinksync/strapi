@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { ContentLayout, Flex, Main } from '@strapi/design-system';
 import {
+  CheckPagePermissions,
   Form,
   SettingsPageTitle,
   useFetchClient,
@@ -376,5 +377,18 @@ export const EditView = () => {
         </Formik>
       </Main>
     </ApiTokenPermissionsProvider>
+  );
+};
+
+export const ProtectedEditView = () => {
+  const permissions = useSelector(selectAdminPermissions);
+
+  return (
+    <>
+      {/* @ts-expect-error we know permissions.settings is defined */}
+      <CheckPagePermissions permissions={permissions.settings['api-tokens'].read}>
+        <EditView />
+      </CheckPagePermissions>
+    </>
   );
 };

@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux';
 
 import { selectAdminPermissions } from '../../../../selectors';
 
-import { ListView } from './ListView';
+import { EditView } from './EditView/EditViewPage';
 
-export const ProtectedApiTokenListView = () => {
+export const ProtectedCreateView = () => {
   const permissions = useSelector(selectAdminPermissions);
 
   return (
     <>
       {/* @ts-expect-error we know permissions.settings is defined */}
-      <CheckPagePermissions permissions={permissions.settings['api-tokens'].main}>
-        <ListView />
+      <CheckPagePermissions permissions={permissions.settings['api-tokens'].create}>
+        <EditView />
       </CheckPagePermissions>
     </>
   );

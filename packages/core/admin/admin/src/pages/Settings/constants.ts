@@ -88,33 +88,27 @@ export const ROUTES_CE: Route[] = [
   },
   {
     async Component() {
-      const component = await import('./pages/ApiTokens/ProtectedListView').then((module) => ({
-        default: module.ProtectedApiTokenListView,
-      }));
+      const { ProtectedListView } = await import('./pages/ApiTokens/ListView');
 
-      return component;
+      return ProtectedListView;
     },
     to: '/settings/api-tokens',
     exact: true,
   },
   {
     async Component() {
-      const component = await import('./pages/ApiTokens/ProtectedCreateView').then((module) => ({
-        default: module.ProtectedApiTokenCreateView,
-      }));
+      const { ProtectedCreateView } = await import('./pages/ApiTokens/CreateView');
 
-      return component;
+      return ProtectedCreateView;
     },
     to: '/settings/api-tokens/create',
     exact: true,
   },
   {
     async Component() {
-      const component = await import('./pages/ApiTokens/ProtectedEditView').then((module) => ({
-        default: module.ProtectedApiTokenCreateView,
-      }));
+      const { ProtectedEditView } = await import('./pages/ApiTokens/EditView/EditViewPage');
 
-      return component;
+      return ProtectedEditView;
     },
     to: '/settings/api-tokens/:id',
     exact: true,

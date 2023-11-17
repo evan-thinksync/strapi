@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { ContentLayout, HeaderLayout, LinkButton, Main } from '@strapi/design-system';
 import {
+  CheckPagePermissions,
   NoContent,
   NoPermissions,
   SettingsPageTitle,
@@ -75,7 +76,7 @@ const TABLE_HEADERS = [
   },
 ];
 
-export const ListView = () => {
+const ListView = () => {
   useFocusWhenNavigate();
   const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
@@ -235,5 +236,18 @@ export const ListView = () => {
         )}
       </ContentLayout>
     </Main>
+  );
+};
+
+export const ProtectedListView = () => {
+  const permissions = useSelector(selectAdminPermissions);
+
+  return (
+    <>
+      {/* @ts-expect-error we know permissions.settings is defined */}
+      <CheckPagePermissions permissions={permissions.settings['api-tokens'].main}>
+        <ListView />
+      </CheckPagePermissions>
+    </>
   );
 };
