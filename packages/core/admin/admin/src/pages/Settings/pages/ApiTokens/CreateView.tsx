@@ -9,11 +9,8 @@ export const ProtectedCreateView = () => {
   const permissions = useSelector(selectAdminPermissions);
 
   return (
-    <>
-      {/* @ts-expect-error we know permissions.settings is defined */}
-      <CheckPagePermissions permissions={permissions.settings['api-tokens'].create}>
-        <EditView />
-      </CheckPagePermissions>
-    </>
+    <CheckPagePermissions permissions={permissions.settings?.['api-tokens'].create}>
+      <EditView />
+    </CheckPagePermissions>
   );
 };

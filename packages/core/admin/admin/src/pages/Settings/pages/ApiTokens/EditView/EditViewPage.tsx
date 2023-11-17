@@ -64,8 +64,7 @@ export const EditView = () => {
   const { setCurrentStep } = useGuidedTour();
   const {
     allowedActions: { canCreate, canUpdate, canRegenerate },
-    // @ts-expect-error permissions.settings is defined
-  } = useRBAC(permissions.settings['api-tokens']);
+  } = useRBAC(permissions.settings?.['api-tokens']);
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const match = useRouteMatch<{ id: string }>('/settings/api-tokens/:id');
   const id = match?.params?.id;
@@ -386,11 +385,8 @@ export const ProtectedEditView = () => {
   const permissions = useSelector(selectAdminPermissions);
 
   return (
-    <>
-      {/* @ts-expect-error we know permissions.settings is defined */}
-      <CheckPagePermissions permissions={permissions.settings['api-tokens'].read}>
-        <EditView />
-      </CheckPagePermissions>
-    </>
+    <CheckPagePermissions permissions={permissions.settings?.['api-tokens'].read}>
+      <EditView />
+    </CheckPagePermissions>
   );
 };

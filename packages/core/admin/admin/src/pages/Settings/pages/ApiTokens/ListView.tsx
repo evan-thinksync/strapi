@@ -84,8 +84,7 @@ const ListView = () => {
   const permissions = useSelector(selectAdminPermissions);
   const {
     allowedActions: { canCreate, canDelete, canUpdate, canRead },
-    // @ts-expect-error we know permissions.settings is defined
-  } = useRBAC(permissions.settings['api-tokens']);
+  } = useRBAC(permissions.settings?.['api-tokens']);
   const { push } = useHistory();
   const { trackUsage } = useTracking();
   const { startSection } = useGuidedTour();
@@ -243,11 +242,8 @@ export const ProtectedListView = () => {
   const permissions = useSelector(selectAdminPermissions);
 
   return (
-    <>
-      {/* @ts-expect-error we know permissions.settings is defined */}
-      <CheckPagePermissions permissions={permissions.settings['api-tokens'].main}>
-        <ListView />
-      </CheckPagePermissions>
-    </>
+    <CheckPagePermissions permissions={permissions.settings?.['api-tokens'].main}>
+      <ListView />
+    </CheckPagePermissions>
   );
 };
