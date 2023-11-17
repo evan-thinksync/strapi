@@ -21,9 +21,9 @@ interface FormApiTokenContainerProps {
   errors?: FormikErrors<Pick<ApiToken, 'name' | 'description' | 'lifespan' | 'type'>>;
   onChange: ({ target: { name, value } }: { target: { name: string; value: TokenType } }) => void;
   canEditInputs: boolean;
-  values: Pick<ApiToken, 'name' | 'description' | 'lifespan' | 'type'>;
+  values: undefined | Partial<Pick<ApiToken, 'name' | 'description' | 'lifespan' | 'type'>>;
   isCreating: boolean;
-  apiToken?: Partial<ApiToken>;
+  apiToken?: null | Partial<ApiToken>;
   onDispatch: React.Dispatch<any>;
   setHasChangedPermissions: (hasChanged: boolean) => void;
 }

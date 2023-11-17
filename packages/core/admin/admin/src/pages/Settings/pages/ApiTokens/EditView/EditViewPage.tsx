@@ -18,7 +18,7 @@ import { Formik, FormikHelpers } from 'formik';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation, useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
   ApiTokenPermissionsContextValue,
@@ -38,7 +38,12 @@ import { Permissions } from './components/Permissions';
 import { schema } from './constants';
 import { initialState, reducer } from './reducer';
 
-import type { Get, Update, Create } from '../../../../../../../shared/contracts/api-token';
+import type {
+  Get,
+  Update,
+  Create,
+  ApiToken,
+} from '../../../../../../../shared/contracts/api-token';
 import type { List as ListContentApiPermissions } from '../../../../../../../shared/contracts/content-api/permissions';
 import type { List as ListContentApiRoutes } from '../../../../../../../shared/contracts/content-api/routes';
 
@@ -49,9 +54,9 @@ export const EditView = () => {
   const { formatMessage } = useIntl();
   const { lockApp, unlockApp } = useOverlayBlocker();
   const toggleNotification = useNotification();
-  const { state: locationState } = useLocation<{ apiToken: { accessKey: string } }>();
+  const { state: locationState } = useLocation<{ apiToken: ApiToken }>();
   const permissions = useSelector(selectAdminPermissions);
-  const [apiToken, setApiToken] = React.useState<{ accessKey: string } | null>(
+  const [apiToken, setApiToken] = React.useState<ApiToken | null>(
     locationState?.apiToken?.accessKey
       ? {
           ...locationState.apiToken,
@@ -67,6 +72,7 @@ export const EditView = () => {
   const match = useRouteMatch<{ id: string }>('/settings/api-tokens/:id');
   const id = match?.params?.id;
   const { get, post, put } = useFetchClient();
+  const history = useHistory();
 
   const isCreating = id === 'create';
 
@@ -178,7 +184,9 @@ export const EditView = () => {
   );
 
   const handleSubmit = async (
-    body: Pick<Get.Response['data'], 'name' | 'description' | 'type' | 'lifespan'>,
+    body: Pick<Get.Response['data'], 'name' | 'description' | 'type'> & {
+      lifespan: Pick<Get.Response['data'], 'lifespan'> | undefined;
+    },
     actions: FormikHelpers<Pick<Get.Response['data'], 'name' | 'description' | 'type' | 'lifespan'>>
   ) => {
     trackUsage(isCreating ? 'willCreateToken' : 'willEditToken', {
@@ -236,10 +244,12 @@ export const EditView = () => {
             }),
       });
 
-      trackUsage(isCreating ? 'didCreateToken' : 'didEditToken', {
-        type: apiToken.type,
-        tokenType: API_TOKEN_TYPE,
-      });
+      if (apiToken?.type) {
+        trackUsage(isCreating ? 'didCreateToken' : 'didEditToken', {
+          type: apiToken.type,
+          tokenType: API_TOKEN_TYPE,
+        });
+      }
     } catch (err) {
       if (err instanceof AxiosError && err.response) {
         const errors = formatAPIErrors(err.response.data);
