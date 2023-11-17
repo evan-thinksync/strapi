@@ -18,7 +18,7 @@ import { Formik, FormikHelpers } from 'formik';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 
 import {
   ApiTokenPermissionsContextValue,
@@ -49,14 +49,12 @@ export const EditView = () => {
   const { formatMessage } = useIntl();
   const { lockApp, unlockApp } = useOverlayBlocker();
   const toggleNotification = useNotification();
-  const history = useHistory();
+  const { state: locationState } = useLocation<{ apiToken: { accessKey: string } }>();
   const permissions = useSelector(selectAdminPermissions);
-  const [apiToken, setApiToken] = React.useState<Get.Response['data']>(
-    // @ts-expect-error this is probably fine for now
-    history.location.state?.apiToken.accessKey
+  const [apiToken, setApiToken] = React.useState<{ accessKey: string } | null>(
+    locationState?.apiToken?.accessKey
       ? {
-          // @ts-expect-error this is probably fine for now
-          ...history.location.state.apiToken,
+          ...locationState.apiToken,
         }
       : null
   );
