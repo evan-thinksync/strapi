@@ -1,4 +1,5 @@
-import { Entity, errors } from '@strapi/utils';
+import { errors } from '@strapi/utils';
+import { Entity } from '@strapi/types';
 
 import { ValidationError as YupValidationError } from 'yup';
 
@@ -9,16 +10,17 @@ export type ApiToken = {
   expiresAt: string;
   id: Entity.ID;
   lastUsedAt: string | null;
-  lifespan: string;
+  lifespan: string | number;
   name: string;
   permissions: string[];
   type: 'custom' | 'full-access' | 'read-only';
   updatedAt: string;
 };
 
-interface ApiTokenBody extends Pick<ApiToken,'description' | 'type' | 'name'> {
+interface ApiTokenBody extends Pick<ApiToken,'description' | 'name'> {
   lifespan?: ApiToken['lifespan'] | number | null;
   permissions?: ApiToken['permissions'] | null;
+  type: ApiToken['type'] | undefined;
 }
 
 /**

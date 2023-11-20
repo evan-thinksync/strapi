@@ -184,10 +184,16 @@ export const EditView = () => {
   );
 
   const handleSubmit = async (
-    body: Pick<Get.Response['data'], 'name' | 'description' | 'type'> & {
-      lifespan: Pick<Get.Response['data'], 'lifespan'> | undefined;
+    body: Pick<Get.Response['data'], 'name' | 'description'> & {
+      lifespan: Get.Response['data']['lifespan'] | undefined;
+      type: Get.Response['data']['type'] | undefined;
     },
-    actions: FormikHelpers<Pick<Get.Response['data'], 'name' | 'description' | 'type' | 'lifespan'>>
+    actions: FormikHelpers<
+      Pick<Get.Response['data'], 'name' | 'description'> & {
+        lifespan: Get.Response['data']['lifespan'] | undefined;
+        type: Get.Response['data']['type'] | undefined;
+      }
+    >
   ) => {
     trackUsage(isCreating ? 'willCreateToken' : 'willEditToken', {
       tokenType: API_TOKEN_TYPE,
