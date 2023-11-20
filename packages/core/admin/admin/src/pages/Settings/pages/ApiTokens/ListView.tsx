@@ -76,7 +76,7 @@ const TABLE_HEADERS = [
   },
 ];
 
-const ListView = () => {
+export const ListView = () => {
   useFocusWhenNavigate();
   const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
